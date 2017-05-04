@@ -4,7 +4,7 @@
 # obtain one at http://opensource.org/licenses/BSD-2-Clause.
 
 name: base_href_rewriter
-version: 1.0.0
+version: 1.0.1
 description: Rewrites Base Href tag in HTML-files.
 author: Tais P. Hansen <tais.hansen@gmail.com>
 homepage: https://github.com/taisph/base-href-rewriter
@@ -12,4 +12,4 @@ environment:
   sdk: '>=1.23.0 <2.0.0'
 dependencies:
   barback: ^0.15.2+10
-  html: any
+  html: ^0.13.1
