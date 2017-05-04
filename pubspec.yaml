@@ -12,3 +12,4 @@ environment:
   sdk: '>=1.23.0 <2.0.0'
 dependencies:
   barback: ^0.15.2+10
+  html: any

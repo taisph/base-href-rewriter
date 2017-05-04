@@ -7,7 +7,9 @@ library base_href_rewriter.transformer;
 
 import 'dart:async';
 
-import 'package:barback/barback.dart';
+import 'package:barback/barback.dart'
+    show Transformer, BarbackSettings, AssetId, Transform, Asset, BarbackMode;
+import 'package:html/dom.dart' show Document;
 
 class BaseHrefRewriterTransformer extends Transformer {
   final BarbackSettings _settings;
@@ -20,10 +22,23 @@ class BaseHrefRewriterTransformer extends Transformer {
 
   @override
   Future apply(Transform transform) async {
-    if (_settings.mode == BarbackMode.DEBUG) {
+    var content = await transform.primaryInput.readAsString();
+    var doc = new Document.html(content);
+    var baseElement = doc.querySelector('head > base');
+    if (baseElement == null) {
       return;
     }
 
-    // TODO: Make some magic.
+    if (_settings.mode == BarbackMode.RELEASE) {
+      baseElement.attributes['href'] =
+          _settings.configuration['releaseHref'] ?? '/';
+    } else {
+      if (_settings.configuration.containsKey('defaultHref')) {
+        baseElement.attributes['href'] = _settings.configuration['defaultHref'];
+      }
+    }
+
+    var id = transform.primaryInput.id;
+    transform.addOutput(new Asset.fromString(id, doc.outerHtml));
   }
 }
